@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@prisma/adapter-neon':
+        specifier: ^7.8.0
+        version: 7.8.0
       '@prisma/adapter-pg':
         specifier: ^7.8.0
         version: 7.8.0
@@ -20,6 +23,9 @@ importers:
       pg:
         specifier: ^8.22.0
         version: 8.22.0
+      prisma:
+        specifier: ^7.0.0
+        version: 7.8.0(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
     devDependencies:
       prettier:
         specifier: ^3.7.4
