@@ -7,14 +7,18 @@ on:
 jobs:
   redeploy_everything:
     name: Deploying everything to the staging cluster
+    runs-on: ubuntu-latest
+
     steps:
       - name: SSH into server
-      - run: |
-          echo ${{secrets.SSH_PRIVATE_KEY}} &> ~/ssh.key
-          ssh -i ${{secrets.SSH_PRIVATE_KEY}} {{secrets.STAGE_SERVER_IP}}
+        run: |
+          echo "${{secrets.SSH_PRIVATE_KEY}}" 
+          ssh -i ${{secrets.SSH_PRIVATE_KEY}} ${{secrets.STAGE_SERVER_IP}} <<'EOF'
+
           cd next-app-cicd-2
-          git pull main origin 
+          git pull origin main
           pnpm install
           pnpm build 
           pm2 restart http 
           pm2 restart ws
+          EOF
