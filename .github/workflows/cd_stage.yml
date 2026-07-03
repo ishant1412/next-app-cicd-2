@@ -12,8 +12,8 @@ jobs:
     steps:
       - name: SSH into server
         run: |
-          echo "${{secrets.SSH_PRIVATE_KEY}}" 
-          ssh -i "${{secrets.SSH_PRIVATE_KEY}}  ${{secrets.STAGE_SERVER_IP}}" <<'EOF'
+          echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/ssh.key
+          ssh -i ~/ssh.key  ${{secrets.STAGE_SERVER_IP}} << 'EOF'
 
           cd next-app-cicd-2
           git pull origin main
