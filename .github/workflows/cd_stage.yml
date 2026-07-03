@@ -1,0 +1,20 @@
+---
+name: Deploy to staging
+on:
+  push:
+    branches:
+      - main
+jobs:
+  redeploy_everything:
+    name: Deploying everything to the staging cluster
+    steps:
+      - name: SSH into server
+      - run: |
+          echo ${{secrets.SSH_PRIVATE_KEY}} &> ~/ssh.key
+          ssh -i ${{secrets.SSH_PRIVATE_KEY}} {{secrets.STAGE_SERVER_IP}}
+          cd next-app-cicd-2
+          git pull main origin 
+          pnpm install
+          pnpm build 
+          pm2 restart http 
+          pm2 restart ws
