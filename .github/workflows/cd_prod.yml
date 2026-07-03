@@ -1,4 +1,4 @@
-name: Deploy to stage branch
+name: Deploy to prod branch
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   Deploy:
-    name: Deploy stage to EC2
+    name: Deploy prod to EC2
     runs-on: ubuntu-latest
 
     steps:
@@ -20,7 +20,7 @@ jobs:
         run: |
           echo "HOSTNAME length: ${#HOSTNAME}"
           echo "USER_NAME length: ${#USER_NAME}"
-          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key_2
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
 
               # Now we have got the access of EC2 and we will start the deploy .
