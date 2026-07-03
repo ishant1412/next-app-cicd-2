@@ -15,8 +15,6 @@ jobs:
 
           echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/ssh.key
           chmod 600 ~/ssh.key
-          mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.STAGE_SERVER_IP }} >> ~/.ssh/known_hosts
           ssh -i ~/ssh.key  ${{secrets.STAGE_SERVER_IP}} << 'EOF'
           cd next-app-cicd-2
           git pull origin main
