@@ -2,7 +2,7 @@ name: Deploy to stage branch
 
 on:
   push:
-    branches: [ main ]
+    branches: [ prod ]
 
 jobs:
   Deploy:
@@ -14,7 +14,7 @@ jobs:
       - name: Build & Deploy
         env:
             PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-            HOSTNAME: ${{secrets.SSH_HOST}}
+            HOSTNAME: ${{secrets.PROD_SSH_HOST}}
             USER_NAME: ${{secrets.USER_NAME}}
 
         run: |
@@ -25,10 +25,10 @@ jobs:
 
               # Now we have got the access of EC2 and we will start the deploy .
               cd next-app-cicd-2
-              git checkout main &&
+              git checkout prod &&
               git fetch --all &&
-              git reset --hard origin/main &&
-              git pull origin main &&
+              git reset --hard origin/prod &&
+              git pull origin prod &&
               pnpm install &&
               pnpm  build &&
               pm2 restart http&&
