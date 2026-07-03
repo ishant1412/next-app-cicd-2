@@ -1,25 +1,36 @@
----
-name: Deploy to staging
+name: Deploy to stage branch
+
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
+
 jobs:
-  redeploy_everything:
-    name: Deploying everything to the staging cluster
+  Deploy:
+    name: Deploy stage to EC2
     runs-on: ubuntu-latest
 
     steps:
-      - name: SSH into server
-        run: |
+      - uses: actions/checkout@v2 
+      - name: Build & Deploy
+        env:
+            PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+            HOSTNAME: ${{secrets.SSH_HOST}}
+            USER_NAME: ${{secrets.USER_NAME}}
 
-          echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/ssh.key
-          chmod 600 ~/ssh.key
-          ssh -i ~/ssh.key  ${{secrets.STAGE_SERVER_IP}} << 'EOF'
-          cd next-app-cicd-2
-          git pull origin main
-          pnpm install
-          pnpm build 
-          pm2 restart http 
-          pm2 restart ws
-          EOF
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+
+              # Now we have got the access of EC2 and we will start the deploy .
+              cd next-app-cicd-2
+              git checkout main &&
+              git fetch --all &&
+              git reset --hard origin/main &&
+              git pull origin main &&
+              sudo pnpm install &&
+              sudo pnpm  build &&
+              sudo pm2 restart http&&
+              sudo pm2 restart ws
+              '
+
+
