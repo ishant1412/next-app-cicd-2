@@ -29,10 +29,10 @@ jobs:
               git fetch --all &&
               git reset --hard origin/main &&
               git pull origin main &&
-              sudo pnpm install &&
-              sudo pnpm  build &&
-              sudo pm2 restart http&&
-              sudo pm2 restart ws
+              pnpm install &&
+              pnpm  build &&
+              pm2 restart http&&
+              pm2 restart ws
               '
 
 
